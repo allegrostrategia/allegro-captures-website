@@ -1,0 +1,948 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Allegro Captures x Emma Gibbs-Ng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #073C8C;
+    --dark-1:    #050E24;
+    --dark-2:    #091630;
+    --orange:    #FF6625;
+    --yellow:    #FFD551;
+    --sky:       #A4D3EB;
+    --blush:     #FFB29E;
+    --off-white: #F3F5FD;
+    --lemon:     #F8E6A0;
+    --white:     #FFFFFF;
+    --body-text: #1A2340;
+    --mid:       #4A5680;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--off-white);
+    color: var(--body-text);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('tom-podmore-1zkHXas1GIo-unsplash.jpg');
+    background-size: cover;
+    background-position: center 42%;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(7,60,140,0.5) 0%, rgba(5,14,36,0.88) 60%, rgba(5,14,36,0.98) 100%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 32px 56px;
+  }
+  .hero-logo {
+    margin-bottom: 36px;
+  }
+  .hero-logo img {
+    height: clamp(72px, 9vw, 112px);
+    width: auto;
+  }
+  .hero-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--yellow);
+    border-radius: 100px;
+    padding: 5px 14px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--white);
+    line-height: 1.15;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  .hero-sub {
+    color: var(--sky);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 28px;
+  }
+  .hmi .hml {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(164,211,235,0.7);
+    margin-bottom: 4px;
+  }
+  .hmi .hmv {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  /* LAYOUT */
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid #D8DDEF; }
+
+  /* TYPE */
+  .section-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(26px, 3.5vw, 36px);
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  p { color: var(--mid); margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--body-text); font-weight: 600; }
+
+  .orange-rule {
+    width: 40px;
+    height: 2px;
+    background: var(--orange);
+    margin: 20px 0 28px;
+  }
+
+  /* OPTION TABS */
+  .option-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    margin-top: 36px;
+  }
+  .option-tab {
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--dark-2);
+    background: transparent;
+    color: var(--dark-2);
+    transition: all 0.2s;
+  }
+  .option-tab.active {
+    background: var(--dark-2);
+    color: var(--white);
+  }
+
+  /* PACKAGE CARDS */
+  .package-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .package-grid { grid-template-columns: 1fr; } }
+
+  .pkg-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #D8DDEF;
+  }
+  .pkg-card-header {
+    background: var(--dark-2);
+    padding: 24px 28px 20px;
+  }
+  .pkg-card-header .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+  }
+  .pkg-card-header h3 {
+    color: var(--white);
+    margin-bottom: 4px;
+    font-size: 20px;
+  }
+  .pkg-card-header .pkg-price {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--yellow);
+    display: block;
+    margin-top: 8px;
+  }
+  .pkg-card-header .pkg-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(255,213,81,0.2);
+    color: var(--yellow);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-top: 6px;
+  }
+  .pkg-card-body { padding: 24px 28px; }
+
+  .deliverable-list {
+    list-style: none;
+    margin: 16px 0 0;
+  }
+  .deliverable-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #EEF0F8;
+    font-size: 14px;
+    color: var(--mid);
+  }
+  .deliverable-list li:last-child { border-bottom: none; }
+  .deliverable-list li::before {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-top: 7px;
+  }
+  .deliverable-list li strong { color: var(--body-text); }
+
+  /* OPTION PANELS */
+  .option-panel { display: none; }
+  .option-panel.active { display: block; }
+
+  /* HIGHLIGHT BOX */
+  .agency-note {
+    background: var(--dark-2);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 32px;
+  }
+  .agency-note p {
+    color: var(--sky);
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+  .agency-note strong { color: var(--yellow); }
+
+  /* DISCOUNT BOX */
+  .discount-box {
+    background: var(--lemon);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 24px;
+    border-left: 3px solid var(--yellow);
+  }
+  .discount-box h3 {
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .discount-box p {
+    font-size: 13px;
+    color: var(--body-text);
+    margin-bottom: 0;
+  }
+
+  /* TRAVEL NOTE */
+  .travel-note {
+    background: var(--lemon);
+    border-radius: 8px;
+    padding: 18px 24px;
+    margin-top: 32px;
+    font-size: 13px;
+    color: var(--body-text);
+    border-left: 3px solid var(--yellow);
+  }
+
+  /* ADD-ONS */
+  .addons-section { background: var(--white); }
+  .addon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+  @media (max-width: 640px) { .addon-grid { grid-template-columns: 1fr; } }
+
+  .addon-card {
+    border: 1px solid #D8DDEF;
+    border-radius: 10px;
+    padding: 22px 24px;
+    background: var(--off-white);
+  }
+  .addon-card .addon-title {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .addon-card .addon-price {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .addon-card p { font-size: 13px; line-height: 1.6; margin-bottom: 0; }
+  .addon-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--dark-2);
+    color: var(--sky);
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+  }
+
+  /* BTS SECTION */
+  .bts-section { background: var(--off-white); }
+  .bts-card {
+    background: var(--white);
+    border: 1px solid #D8DDEF;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 32px;
+    max-width: 420px;
+  }
+  .bts-card-header {
+    background: var(--dark-2);
+    padding: 20px 28px;
+  }
+  .bts-card-header .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+  }
+  .bts-card-header h3 {
+    color: var(--white);
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .bts-card-header .pkg-price {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--yellow);
+    display: block;
+    margin-top: 6px;
+  }
+  .bts-card-body { padding: 20px 28px; }
+  .bts-card-body p { font-size: 13px; color: var(--mid); margin-bottom: 0; }
+
+  /* RETAINER SECTION */
+  .retainer-section {
+    background: var(--dark-1);
+    padding: 64px 0;
+  }
+  .retainer-section .section-eyebrow { color: var(--yellow); }
+  .retainer-section h2 { color: var(--white); }
+  .retainer-section p { color: var(--sky); }
+  .retainer-section h3 { color: var(--white); }
+  .retainer-section strong { color: var(--yellow); }
+  .retainer-card {
+    background: var(--dark-2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 16px;
+  }
+  .retainer-card p { color: rgba(164,211,235,0.85); font-size: 14px; margin-bottom: 0; }
+  .retainer-card h3 { font-size: 18px; margin-bottom: 10px; }
+
+  /* PODCAST SECTION */
+  .podcast-section { background: var(--dark-2); padding: 64px 0; }
+  .podcast-section .section-eyebrow { color: var(--yellow); }
+  .podcast-section h2 { color: var(--white); }
+  .podcast-section p { color: var(--sky); }
+  .podcast-section strong { color: var(--white); }
+
+  .pod-card {
+    background: var(--dark-1);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-top: 28px;
+  }
+  .pod-card-header {
+    padding: 24px 32px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .pod-card-header .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(164,211,235,0.7);
+    margin-bottom: 6px;
+  }
+  .pod-card-header h3 {
+    color: var(--white);
+    font-size: 20px;
+    margin-bottom: 0;
+  }
+  .pod-card-header .pkg-price {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--yellow);
+    display: block;
+    margin-top: 8px;
+  }
+  .pod-card-body { padding: 24px 32px; }
+  .pod-deliverables {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 32px;
+  }
+  @media (max-width: 560px) { .pod-deliverables { grid-template-columns: 1fr; } }
+  .pod-deliverables li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: #C8D8F0;
+  }
+  .pod-deliverables li::before {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    margin-top: 7px;
+  }
+  .podcast-travel {
+    background: rgba(255,213,81,0.12);
+    border-radius: 8px;
+    padding: 18px 24px;
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--sky);
+    border-left: 3px solid var(--yellow);
+  }
+
+  /* BETA SECTION */
+  .beta-section {
+    background: var(--dark-1);
+    padding: 64px 0;
+  }
+  .beta-section .section-eyebrow { color: var(--sky); }
+  .beta-section h2 { color: var(--white); }
+  .beta-section p { color: var(--sky); }
+  .beta-section strong { color: var(--yellow); }
+
+  /* NEXT STEPS */
+  .next-section {
+    position: relative;
+    background-image: url('tom-podmore-1zkHXas1GIo-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  section.next-section { border-top: none; }
+  .next-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(7,60,140,0.82);
+  }
+  .next-section .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+  .next-section .section-eyebrow { color: rgba(255,255,255,0.55); }
+  .next-section h2 {
+    color: var(--white);
+    font-size: clamp(32px, 4.4vw, 48px);
+  }
+  .next-section .orange-rule {
+    margin: 20px auto 28px;
+    background: var(--blush);
+  }
+  .next-section p {
+    color: rgba(255,255,255,0.74);
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--dark-1);
+    padding: 64px 32px;
+    text-align: center;
+  }
+  .footer-logo img {
+    height: 34px;
+    width: auto;
+    margin-bottom: 18px;
+    opacity: 0.75;
+  }
+  .footer p {
+    color: var(--sky);
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .footer .tagline {
+    color: rgba(164,211,235,0.5);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-top: 20px;
+    display: block;
+  }
+
+  /* REVEAL */
+  .js-reveal-ready .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 70vh;
+      max-height: 860px;
+    }
+    .hero-bg {
+      background-position: center 32%;
+    }
+    .hero-inner {
+      padding: 44px 20px 34px;
+    }
+    .hero-logo {
+      margin-bottom: 24px;
+    }
+    .hero-logo img {
+      height: 42px;
+    }
+    .hero h1 {
+      font-size: clamp(30px, 10vw, 42px);
+      line-height: 1.12;
+      margin-bottom: 14px;
+    }
+    .hero-sub {
+      font-size: 14px;
+      line-height: 1.62;
+      margin-bottom: 24px;
+    }
+    .hero-meta {
+      gap: 16px 18px;
+      padding-top: 18px;
+    }
+    .hmi .hml {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+    }
+    .hmi .hmv {
+      font-size: 13px;
+    }
+
+    .next-section {
+      background-position: center 26%;
+    }
+    .next-section .wrapper {
+      padding: 0 20px;
+    }
+    .next-section h2 {
+      font-size: clamp(30px, 9.2vw, 40px);
+      line-height: 1.14;
+    }
+    .next-section p {
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      min-height: 78vh;
+    }
+    .hero-bg {
+      background-position: 62% 30%;
+    }
+    .hero-pill {
+      font-size: 9px;
+      padding: 4px 12px;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 11.5vw, 36px);
+    }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+    }
+
+    .next-section {
+      background-position: 62% 24%;
+    }
+    .next-section .orange-rule {
+      margin: 16px auto 22px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-logo">
+      <img src="Artboard 91.png" alt="Allegro Captures">
+    </div>
+    <div class="hero-pill">Proposal &middot; July 2026</div>
+    <h1>Two packages. Built around your offers.</h1>
+    <p class="hero-sub">Here's our suggestions for two potential packages for your Brand Voice Experience and a package for your Command the Room programme.</p>
+    <div class="hero-meta">
+      <div class="hmi"><div class="hml">Prepared for</div><div class="hmv">Emma Gibbs-Ng</div></div>
+      <div class="hmi"><div class="hml">Packages</div><div class="hmv">Brand Voice + Command the Room</div></div>
+      <div class="hmi"><div class="hml">Prepared by</div><div class="hmv">Nina Oliver</div></div>
+      <div class="hmi"><div class="hml">Date</div><div class="hmv">July 2026</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BRAND VOICE EXPERIENCE -->
+<section>
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">Package 01</p>
+    <h2 class="reveal">The Brand Voice Experience*</h2>
+    <p class="reveal" style="font-size:12px; font-style:italic; color:#8A94B0; margin-top:-12px; margin-bottom:20px;">*We don't have your official name for this one yet, so we've gone with what we've been calling it in this proposal.</p>
+    <div class="orange-rule reveal"></div>
+    <p class="reveal">A half or full day with your client. You draw out their voice, we capture it properly. You handle the pre-work and the interviewing. We handle the cameras, the production, and the edit. They walk away with a real bank of clips, built to last a quarter.</p>
+    <p class="reveal">The power comes from the edit. Because you're working conversationally rather than stopping and starting, we record the full session and pull everything out in post. It's more useful and it actually sounds like them.</p>
+    <p class="reveal">The whole point of this is consistency. One day of filming gives your client enough content to show up every single week for three months, with room to spare. No scrambling for content, no one-off shoots that run dry by week two. They walk away sorted for a quarter.</p>
+
+    <div class="agency-note reveal">
+      <p>A quick note on how we've priced this. Because you're bringing us in as part of your offer rather than working with us directly as a client, we've structured our fees on an <strong>agency model</strong>. That means a leaner margin so the numbers work inside your package pricing, not against it.</p>
+    </div>
+
+    <div class="option-tabs reveal">
+      <button class="option-tab active" onclick="switchOption('a', this)">Option A: Standard</button>
+      <button class="option-tab" onclick="switchOption('b', this)">Option B: With Promo Clips</button>
+    </div>
+
+    <!-- OPTION A -->
+    <div class="option-panel active" id="panel-a">
+      <div class="package-grid">
+        <div class="pkg-card reveal">
+          <div class="pkg-card-header">
+            <p class="eyebrow">Half Day</p>
+            <h3>18 Clips</h3>
+            <span class="pkg-price">&pound;896</span>
+          </div>
+          <div class="pkg-card-body">
+            <p style="font-size:13px; margin-bottom:0;">A 3-hour shoot with one client, producing everything they need for a full quarter of social content.</p>
+            <ul class="deliverable-list">
+              <li><span><strong>3-hour on-location interview shoot</strong>, Nina directing, Dom on camera</span></li>
+              <li><span><strong>Up to 2-camera set-up</strong> depending on location</span></li>
+              <li><span><strong>18 professionally edited clips</strong> with captions, equates to 1 to 2 per week across 3 months</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="pkg-card reveal">
+          <div class="pkg-card-header">
+            <p class="eyebrow">Full Day</p>
+            <h3>36 Clips</h3>
+            <span class="pkg-price">&pound;1,484</span>
+          </div>
+          <div class="pkg-card-body">
+            <p style="font-size:13px; margin-bottom:0;">A 6-hour shoot producing 36 clips, giving your client three pieces of content every week for three months.</p>
+            <ul class="deliverable-list">
+              <li><span><strong>6-hour on-location interview shoot</strong>, Nina directing, Dom on camera</span></li>
+              <li><span><strong>Up to 2-camera set-up</strong> depending on location</span></li>
+              <li><span><strong>36 professionally edited clips</strong> with captions, equates to 3 per week across 3 months</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTION B -->
+    <div class="option-panel" id="panel-b">
+      <div class="package-grid">
+        <div class="pkg-card reveal">
+          <div class="pkg-card-header">
+            <p class="eyebrow">Half Day</p>
+            <h3>18 Clips</h3>
+            <span class="pkg-price">&pound;1,260</span>
+            <span class="pkg-badge">6 promo-style, 12 standard</span>
+          </div>
+          <div class="pkg-card-body">
+            <p style="font-size:13px; margin-bottom:0;">Everything in Option A, plus 6 of the 18 clips elevated with b-roll cut in. A step up in production quality with no extra shoot day needed.</p>
+            <ul class="deliverable-list">
+              <li><span><strong>3-hour interview shoot</strong> plus 1 hour b-roll capture time</span></li>
+              <li><span><strong>Up to 2-camera set-up</strong> depending on location</span></li>
+              <li><span><strong>6 promo-style clips</strong> with b-roll, equates to roughly 1 elevated clip per fortnight</span></li>
+              <li><span><strong>12 standard clips</strong> with captions</span></li>
+              <li><span>Planning session and briefing call included for promo-style clip creative planning</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="pkg-card reveal">
+          <div class="pkg-card-header">
+            <p class="eyebrow">Full Day</p>
+            <h3>36 Clips</h3>
+            <span class="pkg-price">&pound;1,932</span>
+            <span class="pkg-badge">12 promo-style, 24 standard</span>
+          </div>
+          <div class="pkg-card-body">
+            <p style="font-size:13px; margin-bottom:0;">The full day equivalent. 12 of the 36 clips get the full promo treatment, the rest are polished standard edits.</p>
+            <ul class="deliverable-list">
+              <li><span><strong>6-hour interview shoot</strong> plus 1 hour b-roll capture time</span></li>
+              <li><span><strong>Up to 2-camera set-up</strong> depending on location</span></li>
+              <li><span><strong>12 promo-style clips</strong> with b-roll, equates to 1 elevated clip per week</span></li>
+              <li><span><strong>24 standard clips</strong> with captions</span></li>
+              <li><span>Planning session and briefing call included for promo-style clip creative planning</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="discount-box reveal">
+      <h3>Running two clients back to back?</h3>
+      <p>If you book two half-day clients on the same day, we can run the full day as a single 6-hour shoot rather than pricing it as two separate half days. Because your clients share the same travel and set-up, you'd pay the full day rate rather than two half days, which means a meaningful saving on your costs.</p>
+    </div>
+
+    <div class="travel-note reveal">
+      <strong>Travel:</strong> included up to 60 minutes from Ascot (SL5 8QJ) or Sandbanks. Additional travel charged on top. We don't cover external studio or venue hire fees.
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGE ADD-ONS -->
+<section class="addons-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">Package add-ons</p>
+    <h2 class="reveal">Optional extras for your clients</h2>
+    <div class="orange-rule reveal"></div>
+    <p class="reveal">These can be added onto either the half or full day package and priced separately on top.</p>
+
+    <div class="addon-grid">
+      <div class="addon-card reveal">
+        <span class="addon-tag">Package Add-on</span>
+        <p class="addon-title">Location Scouting</p>
+        <span class="addon-price">&pound;150</span>
+        <p>If the shoot location needs sourcing in advance, we'll handle finding the right space. Note this covers our scouting time only, not the location fee itself.</p>
+      </div>
+
+      <div class="addon-card reveal">
+        <span class="addon-tag">Package Add-on</span>
+        <p class="addon-title">Website Header Showreel</p>
+        <span class="addon-price">&pound;336</span>
+        <p>A landscape cut built for a website hero section. Requires its own footage shot in landscape on the day, one extra hour on site. Includes a planning session, briefing call, and extra edit time.</p>
+      </div>
+
+      <div class="addon-card reveal">
+        <span class="addon-tag">Package Add-on</span>
+        <p class="addon-title">Ad Creative</p>
+        <span class="addon-price">&pound;182</span>
+        <p>A separate, intentionally creative ad for your client's business, bolted onto the main shoot day. Planned in advance, 30 minutes extra on the day, and 1.5 hours of high-concept edit. Built to stop the scroll.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BTS REEL FOR YOU -->
+<section class="bts-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">For you</p>
+    <h2 class="reveal">Your BTS Reel</h2>
+    <div class="orange-rule reveal"></div>
+    <p class="reveal">On shoot days, we can capture content of you doing the work. A talking head filmed with pre-shoot time 30 minutes before the client arrives, plus behind-the-scenes moments throughout the day. One edited 60-second reel for your own social, showing what this offer actually looks like in practice.</p>
+    <p class="reveal">BTS footage is captured on the day as standard regardless. The reel is the add-on, priced separately as a cost to you.</p>
+
+    <div class="bts-card reveal">
+      <div class="bts-card-header">
+        <p class="eyebrow">Your Add-on</p>
+        <h3>BTS Reel</h3>
+        <span class="pkg-price">&pound;140</span>
+      </div>
+      <div class="bts-card-body">
+        <p>30 min talking head before the shoot, BTS captured throughout the day, one edited 60-second reel delivered to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RETAINER SECTION -->
+<section class="retainer-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">Suggested ongoing structure</p>
+    <h2 class="reveal">Building this into a recurring offer</h2>
+    <div class="orange-rule" style="background:var(--yellow); margin: 20px 0 28px;"></div>
+    <p class="reveal">One shoot day works. But the real opportunity here is turning this into something your clients book on repeat, which also gives you some predictable monthly revenue rather than chasing one-off bookings.</p>
+    <p class="reveal">A natural structure might look like this: a quarterly shoot with us, with a monthly 1-2-1 with you in between to work through what they're posting and make sure the content is landing. You do the monthly touchpoint, we handle the quarterly production. That combination gives your client accountability and output in the same package.</p>
+
+    <div class="retainer-card reveal">
+      <h3>What this could include</h3>
+      <p>A quarterly shoot day (half or full day depending on their needs) with us. Monthly 1-2-1 sessions with you between shoots. Content review and planning built into the rhythm so clips are always aligned to what they're selling. Structured as a quarterly investment for your client with everything mapped out in advance.</p>
+    </div>
+    <div class="retainer-card reveal">
+      <h3>Why it works for you</h3>
+      <p>Predictable income from a small roster of clients rather than constantly filling the calendar. Deeper results for your clients because the content has strategic direction behind it. And a cleaner story to tell when you're selling it: this is not a one-off shoot, this is an ongoing content partnership.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMMAND THE ROOM -->
+<section class="podcast-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">Package 02</p>
+    <h2 class="reveal">Command the Room</h2>
+    <div class="orange-rule" style="background:var(--yellow); margin: 20px 0 28px;"></div>
+    <p class="reveal">The final piece of your Command the Room programme. Your client has done the deeper work. Now they record. A 45-minute podcast episode with you, captured properly, that they can actually use.</p>
+    <p class="reveal">They walk away with the episode, up to 10 clips, and a promo reel.</p>
+
+    <div class="pod-card reveal">
+      <div class="pod-card-header">
+        <p class="eyebrow">Single Episode</p>
+        <h3>Command the Room Recording</h3>
+        <span class="pkg-price">&pound;504</span>
+      </div>
+      <div class="pod-card-body">
+        <ul class="pod-deliverables">
+          <li>1-hour recording slot (45-minute episode)</li>
+          <li>Both Nina and Dom on the day</li>
+          <li>Edited episode, 2 cameras</li>
+          <li>Promo reel</li>
+          <li>Up to 10 social clips</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="podcast-travel reveal">
+      <strong>Travel:</strong> included up to 60 minutes from Ascot (SL5 8QJ) or Sandbanks. Additional travel charged on top. External studio or venue hire not covered. You can use our Ascot studio free of charge.
+    </div>
+  </div>
+</section>
+
+<!-- BETA / LAUNCH SUPPORT -->
+<section class="beta-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">Supporting your launch</p>
+    <h2 class="reveal">A reduced rate for your beta testers.</h2>
+    <div class="orange-rule" style="background:rgba(164,211,235,0.4); margin: 20px 0 28px;"></div>
+    <p class="reveal">We know you'll want to test this with a small group before you open it up properly, and we'd like to support that. We can offer a reduced rate for your first beta tester clients to help you get the offer off the ground and give you something to promote it with.</p>
+    <p class="reveal">One option that works well: a single 6-hour day split between your beta tester client for 3 hours, and 3 hours of shoot time for your own content. You walk away with footage for your social, they get their clip bank, and we'll price the whole day at a special launch rate to make it as easy as possible to get started.</p>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section id="cta" class="next-section">
+  <div class="wrapper">
+    <p class="section-eyebrow reveal">What happens next</p>
+    <h2 class="reveal">Let's fine-tune it.</h2>
+    <div class="orange-rule reveal"></div>
+    <p class="reveal">These are the options as we see them. Once you've had a look through, let's get back on a call. 20 minutes to confirm which bits fit, nail down the deliverables, and get you ready to start selling this.</p>
+    <p class="reveal">There are a few things we'll agree together before anything is final: how your pre-work connects to the shoot brief, what the clip count promise looks like inside your offer, and how to structure the ongoing package if that's the direction.</p>
+    <p class="reveal">We can also help you think through the messaging and positioning of both offers. How you talk about what your client walks away with, how to frame the consistency angle so it lands with the right people, and how to make the case that this is what actually helps them stand out online and show up with something to say every week.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">
+    <img src="Artboard 91.png" alt="Allegro Captures">
+  </div>
+  <p>Strategy first. Camera second.</p>
+  <span class="tagline">Prepared for Emma Gibbs-Ng &middot; July 2026</span>
+</div>
+
+<script>
+  document.body.classList.add('js-reveal-ready');
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+
+  function switchOption(opt, btn) {
+    document.querySelectorAll('.option-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.option-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + opt).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
+
