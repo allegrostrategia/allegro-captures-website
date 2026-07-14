@@ -106,9 +106,11 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 .showcase-sub { font-size: 0.78rem; font-weight: 300; color: rgba(243,245,253,0.4); max-width: 220px; line-height: 1.6; text-align: right; }
 .video-grid { display: flex; gap: 6px; height: 520px; }
 .vc { position: relative; overflow: hidden; cursor: pointer; background: #000; border-radius: 2px; flex: 1; min-width: 0; transition: flex 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); border: 1px solid rgba(243,245,253,0.05); }
+.video-grid:hover .vc { filter: blur(1.6px) brightness(0.7); }
 .vc:hover { flex: 0 0 auto; height: 100%; width: auto; aspect-ratio: 9 / 16; }
-.vc:hover .vc-video { object-fit: contain; }
-.vc-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.vc:hover { filter: none !important; }
+.vc:hover .vc-video { object-fit: cover; }
+.vc-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
 .vc-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,14,36,0.88) 0%, rgba(5,14,36,0.1) 55%, transparent 100%); opacity: 0.35; transition: opacity 0.4s; pointer-events: none; }
 .vc:hover .vc-overlay { opacity: 1; }
 .vc-mute { position: absolute; top: 0.75rem; right: 0.75rem; z-index: 10; width: 32px; height: 32px; border-radius: 50%; background: rgba(5,14,36,0.7); border: 1px solid rgba(243,245,253,0.2); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(4px); }
@@ -255,13 +257,13 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       <div class="vc-info"><div class="vc-tag">Local Business</div><div class="vc-title">Business Content</div></div>
     </div>
     <div class="vc">
-      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a4450720f3445329fd4cca7.mp4" muted playsinline preload="metadata" loop></video>
+      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a4450720f3445329fd4cca7.mp4" data-thumb-second="1" muted playsinline preload="metadata" loop></video>
       <div class="vc-overlay"></div>
       <div class="vc-mute" title="Click to unmute">
         <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
         <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       </div>
-      <div class="vc-info"><div class="vc-tag">Talking Head</div><div class="vc-title">Authority Content</div></div>
+      <div class="vc-info"><div class="vc-tag">Brand Shoot</div><div class="vc-title">Promo Reel</div></div>
     </div>
     <div class="vc">
       <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a4450780f3445329fd4cd33.mp4" muted playsinline preload="metadata" loop></video>
@@ -273,7 +275,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       <div class="vc-info"><div class="vc-tag">Brand Content</div><div class="vc-title">Behind the Scenes</div></div>
     </div>
     <div class="vc">
-      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a44512818d22f08d73e8592.mp4" muted playsinline preload="metadata" loop></video>
+      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a44512818d22f08d73e8592.mp4" data-thumb-second="1" muted playsinline preload="metadata" loop></video>
       <div class="vc-overlay"></div>
       <div class="vc-mute" title="Click to unmute">
         <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -288,16 +290,16 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
         <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
         <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       </div>
-      <div class="vc-info"><div class="vc-tag">Brand Content</div><div class="vc-title">Brand Showcase</div></div>
+      <div class="vc-info"><div class="vc-tag">Social Content</div><div class="vc-title">Transformation Reel</div></div>
     </div>
     <div class="vc">
-      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a445068c597b88b613fb710.mp4" muted playsinline preload="metadata" loop></video>
+      <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a445068c597b88b613fb710.mp4" data-thumb-second="1" muted playsinline preload="metadata" loop></video>
       <div class="vc-overlay"></div>
       <div class="vc-mute" title="Click to unmute">
         <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
         <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       </div>
-      <div class="vc-info"><div class="vc-tag">Social Content</div><div class="vc-title">Monthly Retainer Reels</div></div>
+      <div class="vc-info"><div class="vc-tag">Brand Shoot</div><div class="vc-title">Promo Reel</div></div>
     </div>
   </div>
 </section>
@@ -499,7 +501,8 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     muteBtn.type = 'button'; muteBtn.className = 'cap-btn cap-mute';
     bar.appendChild(playBtn); bar.appendChild(muteBtn);
     card.appendChild(bar);
-    return {card, video, bar, playBtn, muteBtn};
+    const thumbSecond = Number(video.dataset.thumbSecond || '0');
+    return {card, video, bar, playBtn, muteBtn, thumbSecond};
   }).filter(Boolean);
   if(!items.length) return;
 
@@ -513,9 +516,28 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     it.muteBtn.setAttribute('aria-label', it.video.muted ? 'Unmute' : 'Mute');
   };
 
+  const resetToThumb = (it) => {
+    it.video.pause();
+    it.video.muted = true;
+    const seekTo = Number.isFinite(it.thumbSecond) && it.thumbSecond > 0 ? it.thumbSecond : 0;
+    if(it.video.readyState >= 1){
+      try { it.video.currentTime = seekTo; } catch (_) {}
+    }
+    it.bar.classList.remove('show');
+    sync(it);
+  };
+
+  items.forEach(it => {
+    if(Number.isFinite(it.thumbSecond) && it.thumbSecond > 0){
+      it.video.addEventListener('loadedmetadata', () => {
+        try { it.video.currentTime = it.thumbSecond; } catch (_) {}
+      }, { once: true });
+    }
+  });
+
   const stopOthers = (index) => {
     items.forEach((it, i) => {
-      if(i !== index){ it.video.pause(); it.video.currentTime = 0; it.video.muted = true; it.bar.classList.remove('show'); sync(it); }
+      if(i !== index){ resetToThumb(it); }
     });
   };
 
@@ -546,7 +568,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
   };
 
   const pauseAll = () => {
-    items.forEach(it => { it.video.pause(); it.video.muted = true; it.bar.classList.remove('show'); sync(it); });
+    items.forEach(it => { resetToThumb(it); });
     activeIndex = -1;
   };
 

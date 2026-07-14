@@ -116,7 +116,9 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 .see-all:hover { color: var(--orange); }
 .work-grid { display: flex; gap: 6px; height: 500px; }
 .wc { position: relative; overflow: hidden; cursor: pointer; background: var(--dark-mid); border-radius: 2px; flex: 1; min-width: 0; transition: flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94); border: 1px solid rgba(243,245,253,0.05); }
+.work-grid:hover .wc { filter: blur(1.6px) brightness(0.7); }
 .wc:hover { flex: 0 0 auto; height: 100%; width: auto; aspect-ratio: 9 / 16; }
+.wc:hover { filter: none !important; }
 .wc:hover .wc-video { object-fit: contain; }
 .wc-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
 .wc:hover .wc-bg { transform: scale(1.03); }
@@ -259,13 +261,13 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       <video class="wc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc4baf5f6da40cc5fb9.mp4" muted playsinline preload="metadata" loop></video>
       <div class="video-controls"><button type="button" class="video-btn video-play">Pause</button><button type="button" class="video-btn video-mute">Mute</button></div>
       <div class="wc-shade"></div>
-      <div class="wc-info"><div class="wc-cat">Podcast</div><div class="wc-type">Podcast Production</div></div>
+      <div class="wc-info"><div class="wc-cat">Events</div><div class="wc-type">Live Event Coverage</div></div>
     </div>
     <div class="wc">
       <video class="wc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de7082e.mp4" muted playsinline preload="metadata" loop></video>
       <div class="video-controls"><button type="button" class="video-btn video-play">Pause</button><button type="button" class="video-btn video-mute">Mute</button></div>
       <div class="wc-shade"></div>
-      <div class="wc-info"><div class="wc-cat">Retreats</div><div class="wc-type">Retreat Coverage</div></div>
+      <div class="wc-info"><div class="wc-cat">Brand Shoots</div><div class="wc-type">Promo Reel</div></div>
     </div>
     <div class="wc">
       <video class="wc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de70829.mp4" muted playsinline preload="metadata" loop></video>
@@ -471,14 +473,17 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     sync(it);
   };
 
-  // Scroll: play the middle card MUTED while the grid is on screen
-  const playMiddleMuted = () => {
+  // Scroll: play the middle card while the grid is on screen
+  const playMiddleAuto = () => {
     stopOthers(middleIndex);
     const it = items[middleIndex];
     activeIndex = middleIndex;
-    it.video.muted = true;
+    it.video.muted = !userInteracted;
     it.bar.classList.add('show');
-    it.video.play().catch(()=>{});
+    it.video.play().then(() => {
+      if(userInteracted && it.video.muted){ it.video.muted = false; }
+      sync(it);
+    }).catch(() => { it.video.muted = true; it.video.play().catch(()=>{}); sync(it); });
     sync(it);
   };
 
@@ -505,11 +510,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   });
 
   if(grid){
-    grid.addEventListener('mouseleave', () => { hovering = false; if(inView) playMiddleMuted(); });
+    grid.addEventListener('mouseleave', () => { hovering = false; if(inView) playMiddleAuto(); });
     const gio = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         inView = e.isIntersecting;
-        if(e.isIntersecting){ if(!hovering) playMiddleMuted(); }
+        if(e.isIntersecting){ if(!hovering) playMiddleAuto(); }
         else { pauseAll(); }
       });
     }, {threshold: 0.35});
