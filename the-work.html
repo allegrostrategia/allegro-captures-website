@@ -199,7 +199,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Behind the Scenes</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" data-thumb-second="8" muted playsinline preload="metadata" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" data-thumb-second="2" muted playsinline preload="metadata" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Brand Video</div></div>
       </div>
@@ -718,7 +718,11 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 
   items.forEach((it, index) => {
     sync(it);
-    it.card.addEventListener('mouseenter', () => activateSound(index));
+    it.card.addEventListener('mouseenter', () => {
+      // Rewind past the thumbnail seek so hover always starts from the top
+      try { it.video.currentTime = 0; } catch (_) {}
+      activateSound(index);
+    });
     it.card.addEventListener('mouseleave', () => stopCard(index));
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
