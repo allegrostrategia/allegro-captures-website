@@ -441,6 +441,14 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }).filter(Boolean);
   if(!items.length) return;
 
+  // Mute preference per card, held outside the handlers so a card the user
+  // unmuted comes back with sound on its next hover. true = muted.
+  const muteState = new Map(items.map(it => [it, it.video.muted]));
+  const setMuted = (it, muted) => {
+    it.video.muted = muted;
+    muteState.set(it, muted);
+  };
+
   const middleIndex = Math.floor(items.length / 2);
   let activeIndex = -1, hovering = false, inView = false;
 
@@ -453,20 +461,23 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   const stopOthers = (index) => {
     items.forEach((it, i) => {
-      if(i !== index){ it.video.pause(); it.video.currentTime = 0; it.video.muted = true; it.bar.classList.remove('show'); sync(it); }
+      if(i !== index){ it.video.pause(); it.video.currentTime = 0; it.bar.classList.remove('show'); sync(it); }
     });
   };
 
-  // Hover / click: play this card WITH sound, pause the rest
+  // Hover / click: play this card at its stored mute setting, pause the rest.
+  // Unmuted playback needs a prior gesture, so fall back to muted without
+  // overwriting what the user asked for.
   const activateSound = (index) => {
     if(index < 0 || index >= items.length) return;
     stopOthers(index);
     const it = items[index];
     activeIndex = index;
     it.bar.classList.add('show');
-    it.video.muted = !userInteracted;
+    const wantSound = muteState.get(it) === false && userInteracted;
+    it.video.muted = !wantSound;
     it.video.play().then(() => {
-      if(userInteracted && it.video.muted){ it.video.muted = false; }
+      if(wantSound && it.video.muted){ it.video.muted = false; }
       sync(it);
     }).catch(() => { it.video.muted = true; it.video.play().catch(()=>{}); sync(it); });
     sync(it);
@@ -487,13 +498,16 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   };
 
   const pauseAll = () => {
-    items.forEach(it => { it.video.pause(); it.video.muted = true; it.bar.classList.remove('show'); sync(it); });
+    items.forEach(it => { it.video.pause(); it.bar.classList.remove('show'); sync(it); });
     activeIndex = -1;
   };
 
   items.forEach((it, index) => {
     sync(it);
     it.card.addEventListener('mouseenter', () => { hovering = true; activateSound(index); });
+    // Remember how the user left this card; pausing stays with the grid
+    // handlers below so scroll behaviour is untouched.
+    it.card.addEventListener('mouseleave', () => { muteState.set(it, it.video.muted); });
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index){ activateSound(index); return; }
@@ -503,7 +517,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     it.muteBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index) activateSound(index);
-      it.video.muted = !it.video.muted;
+      setMuted(it, !it.video.muted);
       sync(it);
     });
   });

@@ -683,7 +683,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 
   const stopOthers = (index) => {
     items.forEach((it, i) => {
-      if(i !== index){ it.video.pause(); seekToThumb(it); it.video.muted = true; it.bar.classList.remove('show'); sync(it); }
+      if(i !== index){ it.video.pause(); seekToThumb(it); it.bar.classList.remove('show'); sync(it); }
     });
   };
 
