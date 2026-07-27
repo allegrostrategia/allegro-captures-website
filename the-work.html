@@ -661,18 +661,21 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     muteBtn.type = 'button'; muteBtn.className = 'cap-btn cap-mute';
     bar.appendChild(playBtn); bar.appendChild(muteBtn);
     card.appendChild(bar);
-    return {card, video, bar, playBtn, muteBtn};
+    // Which second of the clip stands in as its thumbnail; data-thumb-second
+    // overrides the default for clips whose 2s mark is blurry.
+    const thumbSecond = Number(video.dataset.thumbSecond || 2);
+    return {card, video, bar, playBtn, muteBtn, thumbSecond};
   }).filter(Boolean);
   if(!items.length) return;
 
-  // Seek 1s in once metadata lands, so each card shows a real frame
-  // as its thumbnail instead of a black one. data-thumb-second on the
-  // video overrides that, for clips whose 1s mark is blurry.
+  // Park the playhead on the thumbnail frame, so an idle card shows a real
+  // frame rather than a black one — on load and again after every hover.
+  const seekToThumb = (it) => {
+    try { it.video.currentTime = it.thumbSecond; } catch (_) {}
+  };
+
   items.forEach(it => {
-    const thumbSecond = Number(it.video.dataset.thumbSecond || 1);
-    it.video.addEventListener('loadedmetadata', () => {
-      try { it.video.currentTime = thumbSecond; } catch (_) {}
-    }, { once: true });
+    it.video.addEventListener('loadedmetadata', () => seekToThumb(it), { once: true });
   });
 
   let activeIndex = -1;
@@ -686,7 +689,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 
   const stopOthers = (index) => {
     items.forEach((it, i) => {
-      if(i !== index){ it.video.pause(); it.video.currentTime = 0; it.video.muted = true; it.bar.classList.remove('show'); sync(it); }
+      if(i !== index){ it.video.pause(); seekToThumb(it); it.video.muted = true; it.bar.classList.remove('show'); sync(it); }
     });
   };
 
@@ -705,11 +708,11 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     sync(it);
   };
 
-  // Leave the card: stop and rewind so the next hover starts from the top
+  // Leave the card: stop and settle back on the thumbnail frame
   const stopCard = (index) => {
     const it = items[index];
     it.video.pause();
-    it.video.currentTime = 0;
+    seekToThumb(it);
     it.video.muted = true;
     it.bar.classList.remove('show');
     if(activeIndex === index) activeIndex = -1;
