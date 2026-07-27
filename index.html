@@ -390,15 +390,15 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 
-// ── Unified showcase video controller ──────────────────────────
+// ── Showcase video controller ──────────────────────────────────
 // - injects play/pause + mute buttons on every card
-// - hover a card: it plays WITH sound, any other playing video pauses
-// - middle card auto-plays (muted) while the grid is on screen, and
-//   stops once you scroll past it
+// - hover a card: it plays at its stored mute setting, the rest pause
+// - leave the card: it pauses and settles on its thumbnail frame
+// - nothing here plays on load or on scroll; hover is the only trigger.
+//   The hero showreel is a separate element and is untouched by this.
 (function(){
   const cards = Array.from(document.querySelectorAll('.video-grid .vc, .work-grid .wc'));
   if(!cards.length) return;
-  const grid = cards[0].closest('.video-grid, .work-grid');
 
   // Inject styles (self-contained so every page behaves the same)
   const style = document.createElement('style');
@@ -437,9 +437,22 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     muteBtn.type = 'button'; muteBtn.className = 'cap-btn cap-mute';
     bar.appendChild(playBtn); bar.appendChild(muteBtn);
     card.appendChild(bar);
-    return {card, video, bar, playBtn, muteBtn};
+    // Which second of the clip stands in as its thumbnail; data-thumb-second
+    // overrides the default for clips whose 2s mark is blurry.
+    const thumbSecond = Number(video.dataset.thumbSecond || 2);
+    return {card, video, bar, playBtn, muteBtn, thumbSecond};
   }).filter(Boolean);
   if(!items.length) return;
+
+  // Park the playhead on the thumbnail frame, so an idle card shows a real
+  // frame rather than a black one — on load and again after every hover.
+  const seekToThumb = (it) => {
+    try { it.video.currentTime = it.thumbSecond; } catch (_) {}
+  };
+
+  items.forEach(it => {
+    it.video.addEventListener('loadedmetadata', () => seekToThumb(it), { once: true });
+  });
 
   // Mute preference per card, held outside the handlers so a card the user
   // unmuted comes back with sound on its next hover. true = muted.
@@ -449,8 +462,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     muteState.set(it, muted);
   };
 
-  const middleIndex = Math.floor(items.length / 2);
-  let activeIndex = -1, hovering = false, inView = false;
+  let activeIndex = -1;
 
   const sync = (it) => {
     it.playBtn.innerHTML = it.video.paused ? ICON.play : ICON.pause;
@@ -461,7 +473,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   const stopOthers = (index) => {
     items.forEach((it, i) => {
-      if(i !== index){ it.video.pause(); it.video.currentTime = 0; it.bar.classList.remove('show'); sync(it); }
+      if(i !== index){ it.video.pause(); seekToThumb(it); it.bar.classList.remove('show'); sync(it); }
     });
   };
 
@@ -483,31 +495,26 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     sync(it);
   };
 
-  // Scroll: play the middle card while the grid is on screen
-  const playMiddleAuto = () => {
-    stopOthers(middleIndex);
-    const it = items[middleIndex];
-    activeIndex = middleIndex;
-    it.video.muted = !userInteracted;
-    it.bar.classList.add('show');
-    it.video.play().then(() => {
-      if(userInteracted && it.video.muted){ it.video.muted = false; }
-      sync(it);
-    }).catch(() => { it.video.muted = true; it.video.play().catch(()=>{}); sync(it); });
+  // Leave the card: remember the mute setting, then stop and settle back on
+  // the thumbnail frame. The video's own muted flag is left as the user had it.
+  const stopCard = (index) => {
+    const it = items[index];
+    muteState.set(it, it.video.muted);
+    it.video.pause();
+    seekToThumb(it);
+    it.bar.classList.remove('show');
+    if(activeIndex === index) activeIndex = -1;
     sync(it);
-  };
-
-  const pauseAll = () => {
-    items.forEach(it => { it.video.pause(); it.bar.classList.remove('show'); sync(it); });
-    activeIndex = -1;
   };
 
   items.forEach((it, index) => {
     sync(it);
-    it.card.addEventListener('mouseenter', () => { hovering = true; activateSound(index); });
-    // Remember how the user left this card; pausing stays with the grid
-    // handlers below so scroll behaviour is untouched.
-    it.card.addEventListener('mouseleave', () => { muteState.set(it, it.video.muted); });
+    it.card.addEventListener('mouseenter', () => {
+      // Rewind past the thumbnail seek so hover always starts from the top
+      try { it.video.currentTime = 0; } catch (_) {}
+      activateSound(index);
+    });
+    it.card.addEventListener('mouseleave', () => stopCard(index));
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index){ activateSound(index); return; }
@@ -521,18 +528,6 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       sync(it);
     });
   });
-
-  if(grid){
-    grid.addEventListener('mouseleave', () => { hovering = false; if(inView) playMiddleAuto(); });
-    const gio = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        inView = e.isIntersecting;
-        if(e.isIntersecting){ if(!hovering) playMiddleAuto(); }
-        else { pauseAll(); }
-      });
-    }, {threshold: 0.35});
-    gio.observe(grid);
-  }
 })();
 </script>
 </body>
