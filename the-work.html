@@ -189,22 +189,22 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       </div>
       <div class="video-grid">
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de7082e.mp4" muted playsinline preload="none" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de7082e.mp4" muted playsinline preload="metadata" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Brand Shoot Reel</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672226a5647acc13b7ad8d.mp4" muted playsinline preload="none" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672226a5647acc13b7ad8d.mp4" muted playsinline preload="metadata" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Behind the Scenes</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" muted playsinline preload="none" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" muted playsinline preload="metadata" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Brand Video</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672351a5647acc13b7eddf.mov" muted playsinline preload="none" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672351a5647acc13b7eddf.mov" muted playsinline preload="metadata" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Product Content</div></div>
       </div>
@@ -664,6 +664,14 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     return {card, video, bar, playBtn, muteBtn};
   }).filter(Boolean);
   if(!items.length) return;
+
+  // Seek 1s in once metadata lands, so each card shows a real frame
+  // as its thumbnail instead of a black one.
+  items.forEach(it => {
+    it.video.addEventListener('loadedmetadata', () => {
+      try { it.video.currentTime = 1; } catch (_) {}
+    }, { once: true });
+  });
 
   let activeIndex = -1;
 
