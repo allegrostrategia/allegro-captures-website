@@ -17,8 +17,7 @@
 html { scroll-behavior: smooth; }
 body { background: var(--dark); color: var(--off-white); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
 
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; transition: background 0.4s; }
-nav.scrolled { background: rgba(5,14,36,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(243,245,253,0.07); }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(5,14,36,0.96); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(243,245,253,0.07); }
 .nav-logo { display: block; text-decoration: none; flex-shrink: 0; line-height: 0; }
 .nav-logo img { height: 40px; width: auto; display: block; }
 .nav-links { display: flex; align-items: center; gap: 2.25rem; list-style: none; }
@@ -91,6 +90,8 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 .hero-lemon img { width: 100%; height: 100%; }
 .hero-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, var(--orange), var(--yellow)); z-index: 2; }
 .hero-content { position: relative; z-index: 2; padding: 11rem 3rem 6rem; max-width: 900px; }
+/* Hero text sits straight on the showreel, so it carries its own shadow. */
+.hero-eyebrow, .hero-headline, .hero-sub { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.4); }
 .hero-eyebrow { display: inline-block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sky); margin-bottom: 2rem; }
 .hero-headline { font-family: var(--font-display); font-style: italic; font-size: clamp(2.4rem, 5vw, 4.8rem); font-weight: 400; line-height: 1.07; letter-spacing: -0.02em; color: white; margin-bottom: 1.75rem; }
 .hero-headline em { color: var(--yellow); }
@@ -381,10 +382,8 @@ if (/\/index\.html$/.test(window.location.pathname)) {
   window.history.replaceState({}, '', cleanedPath + window.location.search + window.location.hash);
 }
 
-const nav=document.getElementById('nav');
 let hasUserScrolled = window.scrollY > 0;
 window.addEventListener('scroll',()=>{
-  nav.classList.toggle('scrolled',scrollY>40);
   if (!hasUserScrolled && window.scrollY > 0) hasUserScrolled = true;
 });
 const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
