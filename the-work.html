@@ -189,22 +189,22 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       </div>
       <div class="video-grid">
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de7082e.mp4" muted playsinline preload="metadata" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a556cc41c4c3afd3de7082e.mp4" muted playsinline preload="none" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Brand Shoot Reel</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672226a5647acc13b7ad8d.mp4" muted playsinline preload="metadata" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672226a5647acc13b7ad8d.mp4" muted playsinline preload="none" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Behind the Scenes</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" muted playsinline preload="metadata" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a6722b5fb06386ede978f7d.mp4" muted playsinline preload="none" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Brand Video</div></div>
       </div>
       <div class="vc">
-        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672351a5647acc13b7eddf.mov" muted playsinline preload="metadata" loop></video>
+        <video class="vc-video" src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a672351a5647acc13b7eddf.mov" muted playsinline preload="none" loop></video>
         <div class="vc-shade"></div>
         <div class="vc-info"><div class="vc-tag">Video</div><div class="vc-title">Product Content</div></div>
       </div>
@@ -615,15 +615,14 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
   lightbox.addEventListener('click',e=>{if(e.target!==lightboxImg)closeLightbox();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lightbox.classList.contains('open'))closeLightbox();});
 
-// ── Unified showcase video controller ──────────────────────────
+// ── Showcase video controller ──────────────────────────────────
 // - injects play/pause + mute buttons on every card
 // - hover a card: it plays WITH sound, any other playing video pauses
-// - middle card auto-plays (muted) while the grid is on screen, and
-//   stops once you scroll past it
+// - leave the card: it pauses and rewinds to the start
+// - nothing ever plays on load or on scroll; hover is the only trigger
 (function(){
   const cards = Array.from(document.querySelectorAll('.video-grid .vc, .work-grid .wc'));
   if(!cards.length) return;
-  const grid = cards[0].closest('.video-grid, .work-grid');
 
   // Inject styles (self-contained so every page behaves the same)
   const style = document.createElement('style');
@@ -666,8 +665,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
   }).filter(Boolean);
   if(!items.length) return;
 
-  const middleIndex = Math.floor(items.length / 2);
-  let activeIndex = -1, hovering = false, inView = false;
+  let activeIndex = -1;
 
   const sync = (it) => {
     it.playBtn.innerHTML = it.video.paused ? ICON.play : ICON.pause;
@@ -697,28 +695,21 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     sync(it);
   };
 
-  // Scroll: play the middle card while the grid is on screen
-  const playMiddleAuto = () => {
-    stopOthers(middleIndex);
-    const it = items[middleIndex];
-    activeIndex = middleIndex;
-    it.video.muted = !userInteracted;
-    it.bar.classList.add('show');
-    it.video.play().then(() => {
-      if(userInteracted && it.video.muted){ it.video.muted = false; }
-      sync(it);
-    }).catch(() => { it.video.muted = true; it.video.play().catch(()=>{}); sync(it); });
+  // Leave the card: stop and rewind so the next hover starts from the top
+  const stopCard = (index) => {
+    const it = items[index];
+    it.video.pause();
+    it.video.currentTime = 0;
+    it.video.muted = true;
+    it.bar.classList.remove('show');
+    if(activeIndex === index) activeIndex = -1;
     sync(it);
-  };
-
-  const pauseAll = () => {
-    items.forEach(it => { it.video.pause(); it.video.muted = true; it.bar.classList.remove('show'); sync(it); });
-    activeIndex = -1;
   };
 
   items.forEach((it, index) => {
     sync(it);
-    it.card.addEventListener('mouseenter', () => { hovering = true; activateSound(index); });
+    it.card.addEventListener('mouseenter', () => activateSound(index));
+    it.card.addEventListener('mouseleave', () => stopCard(index));
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index){ activateSound(index); return; }
@@ -732,18 +723,6 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       sync(it);
     });
   });
-
-  if(grid){
-    grid.addEventListener('mouseleave', () => { hovering = false; if(inView) playMiddleAuto(); });
-    const gio = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        inView = e.isIntersecting;
-        if(e.isIntersecting){ if(!hovering) playMiddleAuto(); }
-        else { pauseAll(); }
-      });
-    }, {threshold: 0.35});
-    gio.observe(grid);
-  }
 })();
 </script>
 </body>
