@@ -191,11 +191,10 @@
     border-radius:4px;
     padding:26px 26px 24px;
     position:relative;
-    opacity:0;
-    transform:translateY(14px);
     transition:opacity .6s ease, transform .6s ease;
   }
-  .card.visible{opacity:1;transform:none;}
+  .js-reveal .card{opacity:0;transform:translateY(14px);}
+  .js-reveal .card.visible{opacity:1;transform:none;}
 
   .card.featured{
     grid-column:span 2;
@@ -376,7 +375,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .card{transition:none;opacity:1;transform:none;}
+    .card, .js-reveal .card{transition:none;opacity:1;transform:none;}
   }
 
   /* ---------------- PRINT ---------------- */
@@ -392,6 +391,7 @@
     footer.cta, .intro-strip, .card, .card.featured, .hero{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   }
 </style>
+<script>document.documentElement.classList.add('js-reveal');</script>
 </head>
 <body>
 
@@ -542,13 +542,18 @@
 
 <script>
   const cards = document.querySelectorAll('.card');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
-    cards.forEach(c => io.observe(c));
-  } else {
-    cards.forEach(c => c.classList.add('visible'));
+  const showAll = () => cards.forEach(c => c.classList.add('visible'));
+  try {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+      }, { threshold: 0.15 });
+      cards.forEach(c => io.observe(c));
+    } else {
+      showAll();
+    }
+  } catch (_) {
+    showAll();
   }
 </script>
 
