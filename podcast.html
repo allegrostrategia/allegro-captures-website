@@ -78,9 +78,10 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; } .nav-links { display: none; }
-  .nav-burger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; padding: 0; cursor: pointer; position: relative; z-index: 101; }
+  .nav-burger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; padding: 0; cursor: pointer; position: relative; z-index: 1000; }
   .nav-burger span { width: 24px; height: 2px; background: var(--off-white); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-  nav.nav-open .nav-links { display: flex; flex-direction: column; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--dark); align-items: center; justify-content: center; gap: 2.5rem; z-index: 99; }
+  nav.nav-open .nav-links { display: flex; flex-direction: column; position: fixed; top: 0; right: 0; width: 75vw; height: 100vh; background: #050E24; opacity: 1; align-items: flex-start; justify-content: flex-start; padding-top: 5rem; padding-left: 2.5rem; gap: 1.25rem; z-index: 999; }
+  .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
   nav.nav-open .nav-links a { font-size: 1.1rem; }
   nav.nav-open .nav-links .nav-cta { padding: 0.85rem 2rem; }
   nav.nav-open .nav-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -430,13 +431,23 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 </footer>
 
 <script>
-  // Mobile menu: the burger toggles a fullscreen panel; any link closes it.
+  // Mobile menu: the burger slides in a side panel over a dim overlay;
+  // any link, or the overlay, closes it.
   const navEl = document.getElementById('nav');
   const burger = navEl && navEl.querySelector('.nav-burger');
   if(burger){
     const setNavOpen = (open) => {
       navEl.classList.toggle('nav-open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      let overlay = navEl.querySelector('.nav-overlay');
+      if(open && !overlay){
+        overlay = document.createElement('div');
+        overlay.className = 'nav-overlay';
+        overlay.addEventListener('click', () => setNavOpen(false));
+        navEl.appendChild(overlay);
+      } else if(!open && overlay){
+        overlay.remove();
+      }
     };
     burger.addEventListener('click', () => setNavOpen(!navEl.classList.contains('nav-open')));
     navEl.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
