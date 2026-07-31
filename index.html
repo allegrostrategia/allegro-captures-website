@@ -112,12 +112,11 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 /* HERO */
 .hero { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--navy); }
 .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(5,14,36,0.55) 0%, rgba(5,14,36,0.35) 35%, rgba(5,14,36,0.94) 92%), linear-gradient(90deg, rgba(5,14,36,0.35) 0%, rgba(5,14,36,0.05) 45%); }
 .hero-lemon { position: absolute; right: -60px; top: -60px; width: 520px; height: 520px; opacity: 0.06; pointer-events: none; z-index: 1; }
 .hero-lemon img { width: 100%; height: 100%; }
 .hero-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, var(--orange), var(--yellow)); z-index: 2; }
 .hero-content { position: relative; z-index: 2; padding: 11rem 3rem 6rem; max-width: 900px; }
-/* Hero text sits straight on the showreel, so it carries its own shadow. */
-.hero-eyebrow, .hero-headline, .hero-sub { text-shadow: 0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.4); }
 .hero-eyebrow { display: inline-block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sky); margin-bottom: 2rem; }
 .hero-headline { font-family: var(--font-display); font-style: italic; font-size: clamp(2.4rem, 5vw, 4.8rem); font-weight: 400; line-height: 1.07; letter-spacing: -0.02em; color: white; margin-bottom: 1.75rem; }
 .hero-headline em { color: var(--yellow); }
