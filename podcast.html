@@ -583,6 +583,13 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
     // Remember how the user left this card; pausing stays with the grid
     // handlers below so scroll behaviour is untouched.
     it.card.addEventListener('mouseleave', () => { muteState.set(it, it.video.muted); });
+    // Touch devices don't reliably fire mouseleave on the card you tap away
+    // from, so a tap elsewhere has to stop the others explicitly.
+    it.card.addEventListener('click', () => {
+      if(activeIndex === index) return;
+      hovering = true;
+      activateSound(index);
+    });
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index){ activateSound(index); return; }

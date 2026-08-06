@@ -720,6 +720,13 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
       activateSound(index);
     });
     it.card.addEventListener('mouseleave', () => stopCard(index));
+    // Touch devices don't reliably fire mouseleave on the card you tap away
+    // from, so a tap elsewhere has to stop the others explicitly.
+    it.card.addEventListener('click', () => {
+      if(activeIndex === index) return;
+      try { it.video.currentTime = 0; } catch (_) {}
+      activateSound(index);
+    });
     it.playBtn.addEventListener('click', (e) => {
       e.preventDefault(); e.stopPropagation();
       if(activeIndex !== index){ activateSound(index); return; }
