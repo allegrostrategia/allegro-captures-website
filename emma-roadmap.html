@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Roadmap &middot; Emma Gibbs-Ng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #050E24; font-family: 'Inter', sans-serif; color: #F3F5FD; }
+
+  /* ===== SHARED NAV ===== */
+  .emma-nav { position: sticky; top: 0; z-index: 200; background: rgba(5,14,36,0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(164,211,235,0.14); font-family: 'Inter', sans-serif; }
+  .emma-nav-inner { max-width: 1040px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 16px; }
+  .en-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+  .en-brand img { height: 24px; width: auto; display: block; }
+  .en-brand span { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(164,211,235,0.65); }
+  .en-links { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+  .en-link { position: relative; display: inline-flex; align-items: center; gap: 7px; font-family: inherit; font-size: 12.5px; font-weight: 500; color: rgba(243,245,253,0.78); text-decoration: none; background: none; border: 0; cursor: pointer; padding: 8px 14px; border-radius: 100px; white-space: nowrap; transition: color .18s, background .18s; }
+  .en-link:hover { color: #FFFFFF; background: rgba(164,211,235,0.10); }
+  .en-link.active { color: #FFD551; }
+  .en-drop { position: relative; }
+  .en-caret { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+  .en-drop.open .en-caret { transform: translateY(1px) rotate(-135deg); }
+  .en-drop-menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 280px; background: #091630; border: 1px solid rgba(164,211,235,0.16); border-radius: 12px; padding: 6px; box-shadow: 0 22px 46px rgba(0,0,0,0.5); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s, transform .18s, visibility .18s; }
+  .en-drop.open .en-drop-menu { opacity: 1; visibility: visible; transform: none; }
+  .en-drop-menu a { display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; transition: background .15s; }
+  .en-drop-menu a:hover { background: rgba(164,211,235,0.09); }
+  .en-dl { display: block; font-size: 13px; font-weight: 600; color: #F3F5FD; margin-bottom: 2px; }
+  .en-ds { display: block; font-size: 11px; color: rgba(164,211,235,0.58); }
+  .en-toggle { display: none; margin-left: auto; width: 38px; height: 38px; align-items: center; justify-content: center; flex-direction: column; gap: 4px; background: none; border: 0; cursor: pointer; }
+  .en-toggle span { display: block; width: 18px; height: 1.5px; background: #F3F5FD; transition: transform .2s, opacity .2s; }
+  .emma-nav.open .en-toggle span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .emma-nav.open .en-toggle span:nth-child(2) { opacity: 0; }
+  .emma-nav.open .en-toggle span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+  @media (hover: hover) and (min-width: 861px) {
+    .en-drop:hover .en-drop-menu { opacity: 1; visibility: visible; transform: none; }
+    .en-drop:hover .en-caret { transform: translateY(1px) rotate(-135deg); }
+  }
+  @media (max-width: 860px) {
+    .emma-nav-inner { height: 56px; padding: 0 18px; }
+    .en-toggle { display: flex; }
+    .en-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 2px; margin-left: 0; background: #050E24; border-bottom: 1px solid rgba(164,211,235,0.14); padding: 10px 14px 16px; }
+    .emma-nav.open .en-links { display: flex; }
+    .en-link { padding: 11px 12px; font-size: 14px; border-radius: 8px; justify-content: space-between; }
+    .en-drop-menu { position: static; display: none; opacity: 1; visibility: visible; transform: none; min-width: 0; box-shadow: none; background: rgba(164,211,235,0.05); border-color: rgba(164,211,235,0.10); margin: 2px 0 6px; }
+    .en-drop.open .en-drop-menu { display: block; }
+  }
+  /* ===== END SHARED NAV ===== */
+
+  .roadmap-page { max-width: 1040px; margin: 0 auto; padding: 0 8px; }
+
+  .roadmap-section {
+    background: #050E24;
+    padding: 56px 48px;
+    font-family: 'Inter', sans-serif;
+    border-bottom: 1px solid rgba(164,211,235,0.08);
+  }
+
+  .roadmap-eyebrow {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #FF6625;
+    margin-bottom: 10px;
+  }
+
+  .roadmap-heading {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(24px, 3.5vw, 36px);
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .roadmap-sub {
+    font-size: 13px;
+    color: rgba(164,211,235,0.6);
+    margin-bottom: 40px;
+    max-width: 560px;
+    line-height: 1.65;
+  }
+
+  .roadmap-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 800px;
+  }
+
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: 120px 40px 1fr;
+    align-items: flex-start;
+    gap: 0 16px;
+    position: relative;
+  }
+
+  /* Connector line between items */
+  .roadmap-item:not(:last-child) .rm-line {
+    position: absolute;
+    left: calc(120px + 16px + 19px);
+    top: 38px;
+    width: 1px;
+    height: calc(100% + 4px);
+    background: linear-gradient(to bottom, rgba(255,102,37,0.4), rgba(164,211,235,0.15));
+  }
+
+  .rm-week {
+    padding-top: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: right;
+    padding-right: 0;
+    line-height: 1.4;
+  }
+
+  .rm-week.now { color: #FF6625; }
+  .rm-week.w2  { color: #FFD551; }
+  .rm-week.w3  { color: #A4D3EB; }
+  .rm-week.w4  { color: rgba(164,211,235,0.5); }
+
+  .rm-dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  .rm-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .now .rm-dot  { background: #FF6625; box-shadow: 0 0 10px rgba(255,102,37,0.5); }
+  .w2 .rm-dot   { background: #FFD551; box-shadow: 0 0 8px rgba(255,213,81,0.3); }
+  .w3 .rm-dot   { background: #A4D3EB; box-shadow: 0 0 8px rgba(164,211,235,0.2); }
+  .w4 .rm-dot   { background: rgba(164,211,235,0.3); }
+
+  .rm-card {
+    background: #091630;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rm-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .roadmap-item.now .rm-card::before { background: #FF6625; }
+  .roadmap-item.w2  .rm-card::before { background: #FFD551; }
+  .roadmap-item.w3  .rm-card::before { background: #A4D3EB; }
+  .roadmap-item.w4  .rm-card::before { background: rgba(164,211,235,0.3); }
+
+  .rm-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .rm-card-desc {
+    font-size: 12px;
+    color: rgba(164,211,235,0.6);
+    line-height: 1.6;
+  }
+
+  .rm-card-desc strong { color: rgba(164,211,235,0.9); }
+
+  .rm-urgent {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(255,102,37,0.15);
+    color: #FF6625;
+    border: 1px solid rgba(255,102,37,0.25);
+    border-radius: 3px;
+    padding: 2px 7px;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 600px) {
+    .roadmap-section { padding: 40px 24px; }
+    .roadmap-item { grid-template-columns: 80px 36px 1fr; }
+    .roadmap-item:not(:last-child) .rm-line { left: calc(80px + 16px + 17px); }
+  }
+
+  /* FOOTER */
+  .rm-footer { text-align: center; padding: 44px 24px 56px; }
+  .rm-footer img { height: 30px; width: auto; opacity: 0.6; margin-bottom: 16px; }
+  .rm-footer p { font-size: 12px; color: rgba(164,211,235,0.45); }
+  .rm-footer a { color: rgba(164,211,235,0.75); text-decoration: none; border-bottom: 1px solid rgba(164,211,235,0.3); }
+  .rm-footer a:hover { color: #FFD551; border-color: #FFD551; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="emma-nav">
+  <div class="emma-nav-inner">
+    <a class="en-brand" href="emma-proposal.html">
+      <img src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a560e511097b81195ac1199.png" alt="Allegro Captures">
+      <span>Emma Gibbs-Ng</span>
+    </a>
+    <button class="en-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="en-links">
+      <a class="en-link" href="emma-proposal.html">Proposal</a>
+      <a class="en-link" href="emma-funnel-map.html">Your Funnel</a>
+      <div class="en-drop">
+        <button class="en-link en-drop-btn" type="button" aria-haspopup="true" aria-expanded="false">Sales page ideas mock ups <i class="en-caret"></i></button>
+        <div class="en-drop-menu">
+          <a href="emma-concept-book.html"><span class="en-dl">Concept 01 &middot; The Book</span><span class="en-ds">The Brand Voice Experience</span></a>
+          <a href="emma-concept-curtain.html"><span class="en-dl">Concept 02 &middot; The Curtain</span><span class="en-ds">Hot Seat &mdash; World Premiere</span></a>
+          <a href="emma-concept-vhs.html"><span class="en-dl">Concept 03 &middot; VHS</span><span class="en-ds">Hot Seat &mdash; On Air</span></a>
+        </div>
+      </div>
+      <a class="en-link active" href="emma-roadmap.html">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<div class="roadmap-page">
+<div class="roadmap-section">
+  <p class="roadmap-eyebrow">Your roadmap</p>
+
+  <p class="roadmap-sub">Here's the order of play. The goal is to get you selling the Hot Seat this week and building momentum every week after that.</p>
+
+  <div class="roadmap-track">
+
+    <!-- THIS WEEK -->
+    <div class="roadmap-item now">
+      <div class="rm-line"></div>
+      <div class="rm-week now">W/c 17<br>Aug</div>
+      <div class="rm-dot-col"><div class="rm-dot"></div></div>
+      <div>
+        <div class="rm-card">
+          <span class="rm-urgent">Urgent</span>
+          <div class="rm-card-title">Confirm your August shoot date</div>
+          <div class="rm-card-desc">Lock in a date this week for your own Hot Seat day. This is what gives you content to promote the offer everything else follows from having that footage.</div>
+        </div>
+        <div class="rm-card">
+          <span class="rm-urgent">Urgent</span>
+          <div class="rm-card-title">Hot Seat sales page Phase 1 live</div>
+          <div class="rm-card-desc">Get a Phase 1 page up this week so you can start selling immediately. <strong>Once you've recorded your own Hot Seat day we'll rebuild it with real footage as Phase 2.</strong> Don't wait for perfect get it live and selling now.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT WEEK -->
+    <div class="roadmap-item w2">
+      <div class="rm-line"></div>
+      <div class="rm-week w2">W/c 24<br>Aug</div>
+      <div class="rm-dot-col"><div class="rm-dot"></div></div>
+      <div>
+        <div class="rm-card">
+          <div class="rm-card-title">Documentary brochure live</div>
+          <div class="rm-card-desc">Get the brochure built and the opt-in page live so you can start outreach to founders, athletes and executives. The sooner this is in people's hands, the sooner the conversations start.</div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-card-title">Start building your freebie</div>
+          <div class="rm-card-desc">Begin working on your signature framework and what the free tool looks like. <strong>This is the engine that builds your audience continuously</strong> it needs to be in motion as early as possible.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK AFTER -->
+    <div class="roadmap-item w3">
+      <div class="rm-line"></div>
+      <div class="rm-week w3">W/c 31<br>Aug</div>
+      <div class="rm-dot-col"><div class="rm-dot"></div></div>
+      <div>
+        <div class="rm-card">
+          <div class="rm-card-title">Freebie live audience building begins</div>
+          <div class="rm-card-desc">Opt-in page live, post opt-in sequence running, ads on. From this point your audience is growing in the background while you focus on delivering the Hot Seat.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONGOING -->
+    <div class="roadmap-item w4">
+      <div class="rm-week w4">Sept<br>onwards</div>
+      <div class="rm-dot-col"><div class="rm-dot"></div></div>
+      <div>
+        <div class="rm-card">
+          <div class="rm-card-title">Story Audit + Story Day</div>
+          <div class="rm-card-desc">Once the freebie is converting, build the Story Audit as the first paid product and start planning the in-person Story Day. These fill the gap between cold audience and Hot Seat client.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="rm-footer">
+  <img src="https://assets.cdn.filesafe.space/NvBUrRGpp4lw06SebMtO/media/6a560e511097b81195ac1199.png" alt="Allegro Captures">
+  <p><a href="emma-proposal.html">Back to the proposal</a></p>
+</div>
+
+<script>
+(function () {
+  var bar = document.querySelector('.emma-nav');
+  if (!bar) return;
+  var toggle = bar.querySelector('.en-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var open = bar.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  Array.prototype.forEach.call(bar.querySelectorAll('.en-drop-btn'), function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var drop = btn.parentNode;
+      var open = drop.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (bar.contains(e.target)) return;
+    bar.classList.remove('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    Array.prototype.forEach.call(bar.querySelectorAll('.en-drop.open'), function (d) {
+      d.classList.remove('open');
+      var b = d.querySelector('.en-drop-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    bar.classList.remove('open');
+    Array.prototype.forEach.call(bar.querySelectorAll('.en-drop.open'), function (d) { d.classList.remove('open'); });
+  });
+})();
+</script>
+</body>
+</html>
