@@ -142,9 +142,9 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 .see-all:hover { color: var(--orange); }
 .work-grid { display: flex; gap: 6px; height: 500px; }
 .wc { position: relative; overflow: hidden; cursor: pointer; background: var(--dark-mid); border-radius: 2px; flex: 1; min-width: 0; transition: flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94); border: 1px solid rgba(243,245,253,0.05); }
-.work-grid:hover .wc { filter: blur(1.6px) brightness(0.7); }
+.work-grid.has-active .wc { filter: blur(1.6px) brightness(0.7); }
 .wc:hover { flex: 0 0 auto; height: 100%; width: auto; aspect-ratio: 9 / 16; }
-.wc:hover { filter: none !important; }
+.wc.active { filter: none !important; }
 .wc:hover .wc-video { object-fit: contain; }
 .wc-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
 .wc:hover .wc-bg { transform: scale(1.03); }
@@ -440,6 +440,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 //   The hero showreel is a separate element and is untouched by this.
 (function(){
   const cards = Array.from(document.querySelectorAll('.video-grid .vc, .work-grid .wc'));
+  const grid = cards.length ? cards[0].closest('.video-grid, .work-grid') : null;
   if(!cards.length) return;
 
   // Inject styles (self-contained so every page behaves the same)
@@ -553,6 +554,17 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   // toggles that card's sound. Desktop hover is untouched below.
   const mobile = window.matchMedia('(max-width: 900px)');
 
+  // The sibling blur is class driven rather than :hover, so a hover state
+  // left behind by a tap cannot strand a card in a blurred state.
+  const setActive = (it) => {
+    items.forEach(o => o.card.classList.toggle('active', o === it));
+    if(grid) grid.classList.add('has-active');
+  };
+  const clearActive = () => {
+    items.forEach(o => o.card.classList.remove('active'));
+    if(grid) grid.classList.remove('has-active');
+  };
+
   const startMobile = () => {
     items.forEach(it => {
       it.video.muted = true;
@@ -585,15 +597,16 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     sync(it);
     it.card.addEventListener('mouseenter', () => {
       if(mobile.matches) return;
+      setActive(it);
       // Rewind past the thumbnail seek so hover always starts from the top
       try { it.video.currentTime = 0; } catch (_) {}
       activateSound(index);
     });
-    it.card.addEventListener('mouseleave', () => { if(!mobile.matches) stopCard(index); });
+    it.card.addEventListener('mouseleave', () => { if(!mobile.matches){ it.card.classList.remove('active'); stopCard(index); } });
     // Touch devices don't reliably fire mouseleave on the card you tap away
     // from, so a tap elsewhere has to stop the others explicitly.
     it.card.addEventListener('click', () => {
-      if(mobile.matches){ toggleMobileSound(it); return; }
+      if(mobile.matches){ setActive(it); toggleMobileSound(it); return; }
       if(activeIndex === index) return;
       try { it.video.currentTime = 0; } catch (_) {}
       activateSound(index);
@@ -610,6 +623,14 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       setMuted(it, !it.video.muted);
       sync(it);
     });
+  });
+
+  if(grid){
+    grid.addEventListener('mouseenter', () => { if(!mobile.matches) grid.classList.add('has-active'); });
+    grid.addEventListener('mouseleave', () => { if(!mobile.matches) clearActive(); });
+  }
+  document.addEventListener('click', (e) => {
+    if(grid && !grid.contains(e.target)) clearActive();
   });
 
   if(mobile.matches) startMobile();
