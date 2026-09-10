@@ -549,17 +549,51 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     sync(it);
   };
 
+  // Mobile has no hover, so every card plays muted from the start and a tap
+  // toggles that card's sound. Desktop hover is untouched below.
+  const mobile = window.matchMedia('(max-width: 900px)');
+
+  const startMobile = () => {
+    items.forEach(it => {
+      it.video.muted = true;
+      it.video.loop = true;
+      it.bar.classList.add('show');
+      it.video.play().catch(() => {});
+      sync(it);
+    });
+  };
+
+  const stopMobile = () => {
+    items.forEach((it, i) => { stopCard(i); });
+  };
+
+  // Only one card carries sound at a time, so unmuting mutes the rest.
+  const toggleMobileSound = (it) => {
+    const wantSound = it.video.muted;
+    items.forEach(other => {
+      if(other !== it && !other.video.muted) setMuted(other, true);
+      sync(other);
+    });
+    setMuted(it, !wantSound);
+    // Browsers may pause a video at the moment it is unmuted, so always ask
+    // it to keep playing rather than only when it already reads as paused.
+    it.video.play().catch(() => { it.video.muted = true; it.video.play().catch(() => {}); sync(it); });
+    sync(it);
+  };
+
   items.forEach((it, index) => {
     sync(it);
     it.card.addEventListener('mouseenter', () => {
+      if(mobile.matches) return;
       // Rewind past the thumbnail seek so hover always starts from the top
       try { it.video.currentTime = 0; } catch (_) {}
       activateSound(index);
     });
-    it.card.addEventListener('mouseleave', () => stopCard(index));
+    it.card.addEventListener('mouseleave', () => { if(!mobile.matches) stopCard(index); });
     // Touch devices don't reliably fire mouseleave on the card you tap away
     // from, so a tap elsewhere has to stop the others explicitly.
     it.card.addEventListener('click', () => {
+      if(mobile.matches){ toggleMobileSound(it); return; }
       if(activeIndex === index) return;
       try { it.video.currentTime = 0; } catch (_) {}
       activateSound(index);
@@ -577,6 +611,9 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       sync(it);
     });
   });
+
+  if(mobile.matches) startMobile();
+  mobile.addEventListener('change', (e) => { if(e.matches) startMobile(); else stopMobile(); });
 })();
 </script>
 </body>
