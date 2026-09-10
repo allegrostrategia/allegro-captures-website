@@ -198,7 +198,7 @@ footer { background: var(--dark-mid); border-top: 1px solid rgba(243,245,253,0.0
 @media (max-width: 1024px) { .pkg-panel.active { grid-template-columns: 1fr; } }
 @media (max-width: 900px) {
   .hero-content { padding: 8rem 1.5rem 5rem; } .hero-lemon { display: none; }
-  .showcase-section { padding: 4rem 1.5rem 5rem; } .showcase-header { flex-direction: column; align-items: flex-start; gap: 1rem; } .showcase-sub { text-align: left; max-width: 100%; } .video-grid { height: 220px; gap: 3px; }
+  .showcase-section { padding: 4rem 1.5rem 5rem; } .showcase-header { flex-direction: column; align-items: flex-start; gap: 1rem; } .showcase-sub { text-align: left; max-width: 100%; } .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); height: auto; gap: 3px; } .vc { flex: none; width: auto; height: auto; aspect-ratio: 9 / 16; } .vc:hover { flex: none; width: auto; height: auto; aspect-ratio: 9 / 16; }
   .why-section { padding: 5rem 1.5rem; } .why-inner { grid-template-columns: 1fr; gap: 3rem; }
   .packages-section { padding: 5rem 1.5rem; }
   .pkg-tab-price { display: none; }
