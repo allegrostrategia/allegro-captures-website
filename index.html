@@ -617,12 +617,27 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       if(it.video.paused) it.video.play().catch(()=>{}); else it.video.pause();
       sync(it);
     });
-    it.muteBtn.addEventListener('click', (e) => {
+    // The mute icon acts only on its own card. On mobile it must not call
+    // activateSound: activeIndex is always -1 there, so that would pause
+    // every other card and drop the grid into single video mode.
+    let lastMuteTouch = 0;
+    const onMuteToggle = (e) => {
       e.preventDefault(); e.stopPropagation();
+      if(e.type === 'touchend') lastMuteTouch = Date.now();
+      else if(Date.now() - lastMuteTouch < 500) return; // ignore the click a tap synthesises
+      if(mobile.matches){
+        setMuted(it, !it.video.muted);
+        // Unmuting can make a browser pause the element, so ask it to continue.
+        it.video.play().catch(() => { it.video.muted = true; it.video.play().catch(() => {}); sync(it); });
+        sync(it);
+        return;
+      }
       if(activeIndex !== index) activateSound(index);
       setMuted(it, !it.video.muted);
       sync(it);
-    });
+    };
+    it.muteBtn.addEventListener('click', onMuteToggle);
+    it.muteBtn.addEventListener('touchend', onMuteToggle);
   });
 
   if(grid){
