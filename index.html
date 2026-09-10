@@ -611,12 +611,25 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       try { it.video.currentTime = 0; } catch (_) {}
       activateSound(index);
     });
-    it.playBtn.addEventListener('click', (e) => {
+    // Same guard as the mute icon: on mobile activeIndex is always -1, so the
+    // old test always passed and activateSound paused every other card.
+    let lastPlayTouch = 0;
+    const onPlayToggle = (e) => {
       e.preventDefault(); e.stopPropagation();
+      if(e.type === 'touchend') lastPlayTouch = Date.now();
+      else if(Date.now() - lastPlayTouch < 500) return; // ignore the click a tap synthesises
+      if(mobile.matches){
+        // Every card is already playing here, so pause or resume this one alone.
+        if(it.video.paused) it.video.play().catch(() => {}); else it.video.pause();
+        sync(it);
+        return;
+      }
       if(activeIndex !== index){ activateSound(index); return; }
       if(it.video.paused) it.video.play().catch(()=>{}); else it.video.pause();
       sync(it);
-    });
+    };
+    it.playBtn.addEventListener('click', onPlayToggle);
+    it.playBtn.addEventListener('touchend', onPlayToggle);
     // The mute icon acts only on its own card. On mobile it must not call
     // activateSound: activeIndex is always -1 there, so that would pause
     // every other card and drop the grid into single video mode.
