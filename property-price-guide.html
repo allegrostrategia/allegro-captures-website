@@ -126,9 +126,9 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 /* strip */
 .al-strip{padding-bottom:clamp(80px,10vw,130px);overflow:hidden}
 .al-strip .al-label{display:block;margin-bottom:22px}
-.al-track{display:flex;gap:14px;width:max-content;animation:al-slide 70s linear infinite}
-.al-track img{height:clamp(200px,24vw,320px);width:auto;border-radius:12px;flex:none}
-@keyframes al-slide{to{transform:translateX(-50%)}}
+.al-track{display:flex;width:max-content;animation:al-slide 40s linear infinite}
+.al-track img{height:clamp(200px,24vw,320px);width:auto;border-radius:12px;flex:none;margin-right:14px}
+@keyframes al-slide{to{transform:translate3d(-50%,0,0)}}
 
 /* process */
 .al-proc{padding-block:clamp(80px,10vw,130px)}
@@ -175,6 +175,7 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
   .al-grid > :nth-child(even){margin-top:0}
   .al-pk .al-head h3{text-align:left}
   .al-band .al-wrap{grid-template-columns:1fr}
+  .al-track{animation-duration:26s}
 }
 @media (max-width:560px){
   :root{--hh:62px}
@@ -328,17 +329,17 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
   <section class="al-strip" id="work" aria-label="Recent work">
     <div class="al-gut"><div class="al-wrap"><span class="al-label">[ Recent shoots ]</span></div></div>
     <div class="al-track" id="alTrack">
-      <img src="media/thumbs/DSC04655.jpg" alt="Gated family home" loading="lazy">
-      <img src="media/thumbs/DSC05405.jpg" alt="Living room with green velvet armchairs" loading="lazy">
-      <img src="media/thumbs/drone.jpg" alt="Tudor style house from the drone" loading="lazy">
-      <img src="media/thumbs/DSC05390.jpg" alt="Kitchen with island" loading="lazy">
-      <img src="media/thumbs/DSC05429.jpg" alt="Study with leather topped desk" loading="lazy">
-      <img src="media/thumbs/DSC09313.jpg" alt="Bungalow and driveway" loading="lazy">
-      <img src="media/thumbs/DSC05417.jpg" alt="Vaulted dining room" loading="lazy">
-      <img src="media/thumbs/DSC05501.jpg" alt="Galleried landing with roof lights" loading="lazy">
-      <img src="media/thumbs/DSC09298.jpg" alt="Open plan living room" loading="lazy">
-      <img src="media/thumbs/DSC05465.jpg" alt="Bathroom with freestanding bath" loading="lazy">
-      <img src="media/thumbs/DSC05483.jpg" alt="Landing with red sofa" loading="lazy">
+      <img src="media/thumbs/DSC04655.jpg" alt="Gated family home" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC05405.jpg" alt="Living room with green velvet armchairs" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/drone.jpg" alt="Tudor style house from the drone" loading="lazy" width="800" height="600">
+      <img src="media/thumbs/DSC05390.jpg" alt="Kitchen with island" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC05429.jpg" alt="Study with leather topped desk" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC09313.jpg" alt="Bungalow and driveway" loading="lazy" width="800" height="533">
+      <img src="media/thumbs/DSC05417.jpg" alt="Vaulted dining room" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC05501.jpg" alt="Galleried landing with roof lights" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC09298.jpg" alt="Open plan living room" loading="lazy" width="800" height="533">
+      <img src="media/thumbs/DSC05465.jpg" alt="Bathroom with freestanding bath" loading="lazy" width="800" height="534">
+      <img src="media/thumbs/DSC05483.jpg" alt="Landing with red sofa" loading="lazy" width="800" height="534">
     </div>
   </section>
 
