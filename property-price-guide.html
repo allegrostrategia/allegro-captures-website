@@ -53,8 +53,8 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 
 /* hero */
 .al-hero{padding-top:clamp(40px,7vw,90px);text-align:center;overflow:hidden}
-.al-giant{font-family:var(--display);font-weight:400;font-size:clamp(64px,15.5vw,224px);line-height:.86;letter-spacing:-.045em;margin:0;text-transform:uppercase}
-.al-giant span{display:block}
+.al-giant{font-family:var(--display);font-weight:400;font-size:clamp(40px,15.5vw,224px);line-height:.86;letter-spacing:-.045em;margin:0;text-transform:uppercase;white-space:nowrap}
+.al-giant span{display:inline}
 .al-mark{display:block;width:clamp(96px,11vw,150px);height:auto;margin:clamp(24px,3vw,40px) auto 0}
 .al-intro{max-width:620px;margin:clamp(32px,4vw,48px) auto 0}
 .al-intro h1{font-family:var(--display);font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1.15;letter-spacing:-.02em;margin:0}
@@ -65,7 +65,6 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 .al-stack{position:relative;height:clamp(420px,52vw,640px);margin-top:clamp(40px,6vw,80px);max-width:1280px;margin-inline:auto}
 .al-card{position:absolute;left:50%;top:0;width:clamp(260px,34vw,460px);margin:0;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45);background:var(--ink-2);will-change:transform}
 .al-card img{width:100%;height:auto}
-.al-card figcaption{position:absolute;left:12px;bottom:12px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;background:rgba(8,13,34,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:5px 10px;border-radius:999px}
 
 /* light: statement */
 .al-light{background:var(--paper);color:var(--ink)}
@@ -128,7 +127,6 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 .al-strip{padding-bottom:clamp(80px,10vw,130px);overflow:hidden}
 .al-strip .al-label{display:block;margin-bottom:22px}
 .al-track{display:flex;gap:14px;width:max-content;animation:al-slide 70s linear infinite}
-.al-strip:hover .al-track{animation-play-state:paused}
 .al-track img{height:clamp(200px,24vw,320px);width:auto;border-radius:12px;flex:none}
 @keyframes al-slide{to{transform:translateX(-50%)}}
 
@@ -145,6 +143,8 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 .al-steps h3{font-family:var(--display);font-weight:500;font-size:20px;margin:0;letter-spacing:-.01em}
 .al-steps p{margin:4px 0 0;color:var(--ink-dim);font-size:15px}
 .al-steps .when{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);white-space:nowrap}
+.al-steps .al-when{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.al-steps .al-step-cta{white-space:nowrap;padding:8px 16px}
 
 /* drone band */
 .al-band{padding-block:clamp(70px,9vw,120px);border-top:1px solid var(--rule)}
@@ -183,7 +183,9 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
   .al-trio figure:nth-child(2){margin-top:0}
   .al-trio figure:nth-child(3){grid-column:1/-1}
   .al-steps li{grid-template-columns:32px minmax(0,1fr)}
+  .al-steps .al-when,
   .al-steps .when{grid-column:2}
+  .al-steps .al-when{align-items:flex-start}
   .al-card{width:60vw}
 }
 @media (prefers-reduced-motion:reduce){
@@ -208,7 +210,7 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
 
 <main>
   <section class="al-hero al-gut">
-    <p class="al-giant" aria-hidden="true"><span>Price</span><span>Guide</span></p>
+    <p class="al-giant" aria-hidden="true"><span>Price</span> <span>Guide</span></p>
     <img class="al-mark" src="media/mark-orange.png" alt="" aria-hidden="true" width="168" height="169">
     <div class="al-intro">
       <h1>Everything a listing needs, <span>in one visit.</span></h1>
@@ -216,9 +218,9 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
       <div class="al-acts"><a class="al-pill al-solid" href="#packages">See the packages</a><a class="al-pill" href="#work">Recent work</a></div>
     </div>
     <div class="al-stack" id="alStack" aria-label="Recent photography">
-      <figure class="al-card" data-x="-82" data-r="-7" data-y="30"><img src="media/photos/DSC05405.jpg" alt="Living room with green velvet armchairs and orange sofas"><figcaption>Living room</figcaption></figure>
-      <figure class="al-card" data-x="82" data-r="6" data-y="70"><img src="media/photos/drone.jpg" alt="Tudor style house and garage photographed from the drone"><figcaption>From the drone</figcaption></figure>
-      <figure class="al-card" data-x="0" data-r="-2" data-y="190"><img src="media/photos/DSC04655.jpg" alt="Brick and render family home behind timber gates"><figcaption>Front elevation</figcaption></figure>
+      <figure class="al-card" data-x="-82" data-r="-7" data-y="30"><img src="media/photos/DSC05405.jpg" alt="Living room with green velvet armchairs and orange sofas"></figure>
+      <figure class="al-card" data-x="82" data-r="6" data-y="70"><img src="media/photos/drone.jpg" alt="Tudor style house and garage photographed from the drone"></figure>
+      <figure class="al-card" data-x="0" data-r="-2" data-y="190"><img src="media/photos/DSC04655.jpg" alt="Brick and render family home behind timber gates"></figure>
     </div>
   </section>
 
@@ -345,7 +347,7 @@ a:focus-visible,button:focus-visible,video:focus-visible{outline:2px solid var(-
       <span class="al-label">[ How it works ]</span>
       <h2>Three steps</h2>
       <ol class="al-steps" id="alSteps">
-        <li><span class="n">01</span><div><h3>Send us the property</h3><p>Book through our contact form or email us the address.</p></div><span class="when">Enquiry</span></li>
+        <li><span class="n">01</span><div><h3>Send us the property</h3><p>Book through our contact form or email us the address.</p></div><div class="al-when"><span class="when">Enquiry</span><a class="al-pill al-solid al-step-cta" href="https://hello.dubsado.com/public/form/view/6a71063371cba42f8714edb4" target="_blank" rel="noopener">Contact us</a></div></li>
         <li><span class="n">02</span><div><h3>One visit</h3><p>Inside, outside and the grounds, covered in a single appointment.</p></div><span class="when">On site</span></li>
         <li><span class="n">03</span><div><h3>Ready fast</h3><p>Edited and delivered on a turnaround built for live listings, not a queue.</p></div><span class="when">Delivered</span></li>
       </ol>
